@@ -13,15 +13,29 @@ public class PlayerController : MonoBehaviour
     public float walkSpeed = 1.4f;
     public float runSpeed = 2f;
 
+    PlayerInteractor playerInteractor;
+
     private void Start()
     {
         controller= GetComponent<CharacterController>();    
         animator = GetComponent<Animator>();
+
+        playerInteractor = GetComponentInChildren<PlayerInteractor>();
     }
 
     private void Update()
     {
         Move();
+        Interact();
+
+    }
+
+    public void Interact()
+    {
+        if (Input.GetButtonDown("Fire1"))
+        {
+            playerInteractor.Interact();
+        }
     }
 
     public void Move()

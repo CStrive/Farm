@@ -39,7 +39,10 @@ public class PlayerInteractor : MonoBehaviour
         }
 
     }
-
+    /// <summary>
+    /// Ñ¡ÔñµØ°å
+    /// </summary>
+    /// <param name="land"></param>
     private void SelectLand(Land land)
     {
         if (selectedland != null)
@@ -48,6 +51,16 @@ public class PlayerInteractor : MonoBehaviour
         }
         selectedland = land;
         land.Select(true);
+    }
+
+    public void Interact()
+    {
+        if (selectedland != null)
+        {
+            selectedland.Interact();
+            return;
+        }
+        Debug.Log("Land");
     }
 
 }
