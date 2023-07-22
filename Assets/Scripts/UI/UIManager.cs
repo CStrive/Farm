@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -9,6 +10,11 @@ public class UIManager : MonoBehaviour
     public GameObject inventoryPanel;
     public InventorySolt[] toolSolts;
     public InventorySolt[] itemSolts;
+    public Text itemNameText;
+    public Text itemDescriptionText;
+    public Image toolEquipSlot;
+    public HandInventorySlot toolHandSlot;
+    public HandInventorySlot itemHandSlot;
 
     private void Awake()
     {
@@ -25,6 +31,16 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         RenderInventory();
+        AssignSlotIndexes();
+    }
+
+    public void AssignSlotIndexes()
+    {
+        for (int i = 0; i < toolSolts.Length; i++)
+        {
+            toolSolts[i].AssignIndex(i);
+            itemSolts[i].AssignIndex(i);
+        }
     }
 
     public void RenderInventory()
@@ -33,6 +49,18 @@ public class UIManager : MonoBehaviour
         ItemData[] inventoryItemSlots = InventoryManager.Instance.items;
         RenderInventoryPanel(inventoryToolSlots, toolSolts);
         RenderInventoryPanel(inventoryItemSlots, itemSolts);
+
+        toolHandSlot.Display(InventoryManager.Instance.equippedTool);
+        itemHandSlot.Display(InventoryManager.Instance.equippedItem);
+
+        ItemData equippedTool = InventoryManager.Instance.equippedTool;
+        if (equippedTool != null)
+        {
+            toolEquipSlot.sprite = equippedTool.thumbnail;
+            toolEquipSlot.gameObject.SetActive(true);
+            return;
+        }
+        toolEquipSlot.gameObject.SetActive(false);
     }
 
     private void RenderInventoryPanel(ItemData[] slots, InventorySolt[] uiSlots)
@@ -48,6 +76,15 @@ public class UIManager : MonoBehaviour
     {
         inventoryPanel.SetActive(!inventoryPanel.activeSelf);
         RenderInventory();
+    }
+
+    public void DisplayItemInfo(ItemData data)
+    {
+        if (data != null)
+        {
+            itemNameText.text = data.name;
+            itemDescriptionText.text = data.description;
+        }
     }
 
 }

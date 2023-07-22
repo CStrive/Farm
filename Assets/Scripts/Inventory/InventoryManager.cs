@@ -23,15 +23,50 @@ public class InventoryManager : MonoBehaviour
     public ItemData[] items = new ItemData[8];
     public ItemData equippedItem = null;
 
-    // Start is called before the first frame update
-    void Start()
+    public void InventoryToHand(int slotIndex,InventorySolt.InventoryType inventoryType)
     {
-        
+        if (inventoryType == InventorySolt.InventoryType.Item)
+        {
+            ItemData itemToEquip = InventoryManager.Instance.items[slotIndex];
+            items[slotIndex] = equippedItem;
+            equippedItem = itemToEquip;
+        }
+        else
+        {
+            ItemData toolToEquip = tools[slotIndex];
+            tools[slotIndex] = equippedTool;
+            equippedTool = toolToEquip;
+        }
+        UIManager.Instance.RenderInventory();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void HandToInventory(InventorySolt.InventoryType inventoryType)
     {
-        
+        if (inventoryType == InventorySolt.InventoryType.Item)
+        {
+            for (int i = 0;  i < items.Length; i++)
+            {
+                if (items[i] == null)
+                {
+                    items[i] = equippedItem;
+                    equippedItem = null;
+                    break;
+                }
+            }
+        } else
+        {
+            for (int i = 0; i < tools.Length; i++)
+            {
+                if (tools[i] == null)
+                {
+                    tools[i] = equippedTool;
+                    equippedTool = null;
+                    break;
+                }
+            }
+        }
+
+        UIManager.Instance.RenderInventory();
     }
+
 }
